@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title sec:authentication="name"></title>
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+    </style>
+    
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+        	<div sec:authorize="hasRole('ROLE_ADMIN')">        	
+            	<a class="navbar-brand" href="#">管理员登录</a>
+            	
+            </div>
+            <div sec:authorize="hasRole('ROLE_USER')">
+            	<a class="navbar-brand" href="#">用户登录</a>
+            </div>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/}">首页</a></li>
+                <li><a th:href="@{http://www.baidu.com}">百度</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="starter-template">
+        
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+        	<h1 th:text="${msgadmin.title}"></h1>
+        	<p class="bg-primary" th:text="${msgadmin.content}"></p>
+            <p class="bg-info" th:text="${msgadmin.extraInfo}"></p>
+            <form th:action="@{/logout}" method="post">
+            	<input type="submit" class="btn btn-primary" value="注销"  onclick="adminleave()"/>
+        	</form>
+        </div>
+        <div sec:authorize="hasRole('ROLE_USER')">
+        	<h1 th:text="${msguser.title}"></h1>
+        	<p class="bg-primary" th:text="${msguser.content}"></p>
+            <p class="bg-info" th:text="${msguser.extraInfo}"></p>
+            <form th:action="@{/logout}" method="post">
+            	<input type="submit" class="btn btn-primary" value="注销"  onclick="userleave()"/>
+        	</form>
+        </div>
+        
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+		function adminleave(){
+			alert("管理员，离开");
+		}
+		function userleave(){
+			alert("用户，离开");
+		}
+		
+        function confirmDialog(){  
+            if(confirm("还要继续吗？")){  
+                alert("继续");  
+            }else{  
+                alert("再见");  
+            }  
+        }  
+          
+        function promptDialog(){  
+            var name = prompt("你的名字是：");  
+            alert("你好，" + name);  
+        }  
+    </script> 
